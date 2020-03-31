@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, DependencyList } from 'react';
 
-export const useHttp = (url, dependencies) => {
+export function useHttp<T>(url : string, dependencies : DependencyList) : [boolean, T?] {
     const [isLoading, setIsLoading] = useState(false);
-    const [fetchedData, setFetchedData] = useState(null);
+    const [fetchedData, setFetchedData] = useState<T | undefined>(undefined);
 
     //   fetch('https://swapi.co/api/people')
     useEffect(() => {
