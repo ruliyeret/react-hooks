@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 
-import { useHttp } from '../hooks/http';
+import { CharacterFetcher } from "../hooks/character-fetch";
+
 import Summary from './Summary';
+import { isUndefined } from 'util';
 
-const Character = props => {
+const Character = (props : {selectedChar: number}) => {
 
-  const [isLoading, fetchedData] = useHttp(
-      'https://swapi.co/api/people/' + props.selectedChar,
-      [props.selectedChar]
-  );
+  const [isLoading, fetchedData] = CharacterFetcher.tryFetchSelectedChar(props.selectedChar);
 
-  let loadedCharacter = null;
+  let loadedCharacter;
 
-  if (fetchedData) {
+  if (!isUndefined(fetchedData)) {
     loadedCharacter = {
       id: props.selectedChar,
       name: fetchedData.name,

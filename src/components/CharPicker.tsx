@@ -1,13 +1,22 @@
 import React from 'react';
 
-import { useHttp } from '../hooks/http';
+import { CharacterFetcher } from "../hooks/character-fetch";
 
 import './CharPicker.css';
+import { isUndefined } from 'util';
 
-const CharPicker = props => {
-  const [isLoading, fetchedData] = useHttp('https://swapi.co/api/people', []);
+export type Sides = 'light' | 'dark';
 
-  const selectedCharacters = fetchedData
+type CharPickerProps = {
+  side: Sides;
+  selectedChar: number;
+  onCharSelect: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const CharPicker = (props : CharPickerProps) => {
+  const [isLoading, fetchedData] = CharacterFetcher.tryFetchAllChars();
+
+  const selectedCharacters = !isUndefined(fetchedData)
       ? fetchedData.results.slice(0, 5).map((char, index) => ({
         name: char.name,
         id: index + 1
