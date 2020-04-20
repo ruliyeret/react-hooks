@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-
 import CharPicker, { Sides } from './components/CharPicker';
-import Character from './components/Character';
+
+import React, { useState } from 'react';
+import Actor from './components/Actor';
+import AddForm from "./components/from";
 
 const App = () => {
 
     const [destroyed, setDestroyed] = useState(false);
+    const [added, setAddButton] = useState(false);
 
-    const [selectedCharacter, setSelectedCharacter] = useState(1);
+    const [selectedActor, setSelectedActor] = useState(1);
 
     const [chosenSide, setChosenSide] = useState<Sides>('light');
 
     const charSelectHandler = (event : React.ChangeEvent<HTMLSelectElement>) => {
         const charId : number = parseInt(event.target.value);
-        setSelectedCharacter(charId);
+        setSelectedActor(charId);
     };
+
+    const addActor = () =>{
+        setAddButton(!added)
+    }
 
     const destructionHandler = () => {
         setDestroyed(true);
@@ -24,18 +30,19 @@ const App = () => {
         <React.Fragment>
             <CharPicker
                 side={chosenSide}
-                selectedChar={selectedCharacter}
+                selectedChar={selectedActor}
                 onCharSelect={charSelectHandler}
             />
-            <Character selectedChar={selectedCharacter} />
+            <Actor selectedChar={selectedActor} />
             <button onClick={() => setChosenSide('light')}>Light Side</button>
             <button onClick={() => setChosenSide('dark')}>Dark Side</button>
+            <button onClick={addActor}>Add Actor</button>
             {chosenSide === 'dark' && (
                 <button onClick={destructionHandler}>DESTROY!</button>
             )}
+            {added && (<AddForm/>)}
         </React.Fragment>
     );
-
     if (destroyed) {
         content = <h1>Game Over!</h1>;
     }

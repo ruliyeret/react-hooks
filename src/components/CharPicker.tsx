@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CharacterFetcher } from "../hooks/character-fetch";
+import ActorFetcher from '../hooks/actor-fetch';
 
 import './CharPicker.css';
 import { isUndefined } from 'util';
@@ -14,7 +14,7 @@ type CharPickerProps = {
 }
 
 const CharPicker = (props : CharPickerProps) => {
-  const [isLoading, fetchedData] = CharacterFetcher.tryFetchAllChars();
+  const [isLoading, fetchedData] = ActorFetcher.tryFetchAllChars();
 
   const selectedCharacters = !isUndefined(fetchedData)
       ? fetchedData.results.slice(0, 5).map((char, index) => ({
