@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ApolloProvider from "./apollo/apolloProvider"
 
-import './index.css';
-import App from './App';
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(ApolloProvider, document.getElementById('root'));
