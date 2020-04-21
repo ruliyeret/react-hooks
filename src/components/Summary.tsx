@@ -20,7 +20,7 @@ const Summary = (props : SummaryProps) => {
         Height: <span className="summary__output">{props.height}</span>
       </p>
       <p>
-        Appears in # Movies:{' '}
+        Appears in  Movies:{' '}
         <span className="summary__output">{props.movieCount}</span>
       </p>
     </div>

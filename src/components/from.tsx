@@ -1,57 +1,46 @@
-
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag"
+import queries from "../apollo/queries";
 
 export default function AddForm(){
+    //
+ const {register, handleSubmit} = useForm();
 
-    const {register, handleSubmit} = useForm();
 
-    const ADD_ACTOR = gql`
-          mutation AddActor(&id: Number! , $name: String!, 
-                            $height: String!, $gender: String!,     
-                            $movieCount: Number!) {
-            addActor(id: $id, name: $name!, height: $height,
-                      $gender: $gender, $movieCount: $movieCount) {
-              id
-              name
-              gender
-              height
-              movieCount 
-            }
-          }`;
-    const [addTodo, { data }] = useMutation(ADD_ACTOR);
+    const [addActor, { data , error}] = useMutation(queries.ADD_ACTOR);
 
 
     // @ts-ignore
-    const onSubmit = (data) => {
-        data.id  = Math.floor(Math.random() * 1156465465) + 1;
-        addTodo({ variables: { id: data.id, name:data.name, height: data.height,
-            gender: data.gender, movieCount: data.movieCount} });
+    const onSubmit = (actorToAdd) => {
+         console.log(actorToAdd);
+         addActor({ variables: {
+                 actorId: parseInt(actorToAdd.actorId),
+                 name: actorToAdd.firstName,
+                 movieCount: parseInt(actorToAdd.movieCount),
+                 height: actorToAdd.height,
+                 gender: actorToAdd.gender,
+             }});
+        if(data){
+            console.log("sdad");
+        }
+        if(error){
+            console.log(error.message);
+        }
+    };
 
-        console.log(data)
-    }
 
+    return (<form onSubmit={handleSubmit(onSubmit)} >
+        <input name="actorId" type="text" placeholder={"ID"} ref={register}/>
+      <input name="firstName"  placeholder={"first name"} ref={register}/>
 
-     const addCharacter = () => {
-        // mutation to greaphql
-
-    }
-    return (  <form onSubmit={handleSubmit(onSubmit)}>
-        <label> name:<input name="firstName" ref={register} /></label>
-        <label> gender:
             <select name="gender" ref={register}>
                 <option value="male">male</option>
                 <option value="female">female</option>
             </select>
-        </label>
-        <label>height:
-            <input name="height" ref={register} />
-        </label>
-        <label>movie count:
-            <input name="movieCount" ref={register} />
-        </label>
+
+            <input name="height" placeholder={"height"} ref={register}/>
+            <input name="movieCount"  placeholder={"movie count:"} ref={register}/>
         <input type="submit" />
     </form>)
 }
