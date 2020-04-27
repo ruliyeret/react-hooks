@@ -2,9 +2,9 @@ import ActorPicker, { Sides } from './components/ActorPicker';
 
 import React, {useEffect, useState} from 'react';
 import Actor from './components/Actor';
-import AddForm from "./components/from";
+import AddForm from "./components/AddFrom";
 import {ActorType} from "./hooks/actor-fetch";
-import {useLazyQuery, useQuery} from "@apollo/react-hooks";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/react-hooks";
 import queries from "./apollo/queries";
 
 
@@ -12,15 +12,21 @@ const App = () => {
 
     const [destroyed, setDestroyed] = useState<boolean>(false);
     const [added, setAddButton] = useState<boolean>(false);
+    const [currentActor, setActor] =useState("")
     const [showActorList, setActorList] = useState<boolean>(false);
     const [chosenSide, setChosenSide] = useState<Sides>('light');
-    const  [getActorByName, {called, error, data, loading}] = useLazyQuery(queries.GET_ACTOR_BY_NAME)
+    const  [getActorByName, {called, error, data, loading}] = useLazyQuery(queries.GET_ACTOR_BY_NAME);
+    const [deleteCurrentActor, {data: queryMutaion, error:queryMutation}] =
+        useMutation(queries.DELETE_ACTOR_BY_NAME);
 
     const [actorSelected, setActorSelected] = useState(false);
-    const actorSelectHandler = (event : React.ChangeEvent<HTMLSelectElement>) => {
-            setActorSelected(true);
-           getActorByName({variables: {actorName: event.target.value}});
+
+    const actorSelectHandler = (name: string) => {
+        setActor(name);
+        setActorSelected(true);
+        getActorByName({variables: {actorName: name}});
     };
+
     const getDefaultActor = ():ActorType =>{
         const actor = {
             name: "",
@@ -40,6 +46,7 @@ const App = () => {
         setDestroyed(true);
     };
 
+
     const actorListHandler = () =>{
         setActorList(!showActorList);
     };
@@ -53,12 +60,16 @@ const App = () => {
 
         }
     }
+
+    const deleteActor = () => {
+        deleteCurrentActor({variables:{name: currentActor}});
+    }
+
     let content = (
         <React.Fragment>
             <ActorPicker
-                selectedChar={selectedActor}
+                selectedActor={setSelectedActor}
                 side={chosenSide}
-                onActorSelect={actorSelectHandler}
             />
             <Actor actor  = {selectedActor}/>
             <button onClick={() => setChosenSide('light')}>Light Side</button>
@@ -68,6 +79,7 @@ const App = () => {
                 <button onClick={destructionHandler}>DESTROY!</button>
             )}
             {added && (<AddForm/>)}
+            <button onClick={deleteActor}>delete Actor</button>
             <button onClick={actorListHandler}>Get Actor List</button>
 
         </React.Fragment>

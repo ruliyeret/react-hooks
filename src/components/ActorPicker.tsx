@@ -1,23 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ActorFetcher, {ActorType} from '../hooks/actor-fetch';
 import './ActorPicker.css';
 import { isUndefined } from 'util';
 
 export type Sides = 'light' | 'dark';
 
-type ActorPickerProps = {
-  side: Sides;
-  selectedActor: number;
-  onActorSelect: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-}
 
 const ActorPicker = (props:any) => {
   const {loading, data, error} = ActorFetcher.getAllActors();
-
+  const [firstTime, setFirstTime] = useState<boolean>(true);
     const selectedActors = !isUndefined(data)
       ? data.Actors.map((actor:ActorType) => ({
-        name: actor.name,
-        id: actor.actorId
+            name: actor.name,
+            id: actor.actorId,
+            gender: actor.gender,
+            height: actor.height,
+            movieCount: actor.movieCount
       }))
       : [];
 
@@ -26,10 +24,21 @@ const ActorPicker = (props:any) => {
         content = <p>error {error.message}</p>;
     }
   if (!loading && selectedActors && selectedActors.length > 0) {
+      if(firstTime) {
+          const firstActor = selectedActors[0];
+          // props.onActorSelect(selectedActors[0].name);
+          props.selectedActor({"name": firstActor.name,
+              "height": firstActor.height,
+              "gender": firstActor.gender,
+              "actorId": firstActor.actorId,
+              "movieCount": firstActor.movieCount});
+          setFirstTime(false);
+      }
     content = (
         <select
-            onChange={props.onActorSelect}
-            value={props.selectedActor}
+            onChange = {(event)=>
+                props.selectedActor(selectedActors.find((name:string) => name == event.target.value))}
+            value={props.currentActor.name}
             className={props.side}
         >
           {selectedActors.map((actor:ActorType) => (

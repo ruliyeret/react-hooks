@@ -7,6 +7,9 @@ export default class Queries{
          Actors{
             name
             actorId
+            gender
+            height
+            movieCount
         }
     }`;
 
@@ -16,8 +19,8 @@ export default class Queries{
                      name
                      actorId
                      gender
-                     height
                 }
+                     height
             }
         
     `;
@@ -31,4 +34,12 @@ export default class Queries{
             
             }
           }`;
+
+    static DELETE_ACTOR_BY_NAME = gql`
+        mutation deleteActorByName($name: String){
+            deleteActorByName(name: $name){
+            name
+            }
+        }
+    `
 }

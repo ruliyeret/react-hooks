@@ -13,4 +13,4 @@ const Actor = (props : {actor: ActorType}) => {
   )
 };
 
-export default React.memo(Actor);
+export default Actor;
