@@ -41,5 +41,20 @@ export default class Queries{
             name
             }
         }
+    `;
+    static SUBSCRIPTION_ACTOR_ADD_EVENT = gql`
+        subscription addActor{
+             addActor{
+                 name
+            }
+        }
+    `;
+
+    static SUBSCRIPTION_ACTOR_DELETE_EVENT = gql`
+        subscription deleteActor{
+            deleteActor{
+                 name
+            }
+        }
     `
 }
