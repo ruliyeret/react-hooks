@@ -42,13 +42,6 @@ export default class Queries{
             }
         }
     `;
-    static SUBSCRIPTION_ACTOR_ADD_EVENT = gql`
-        subscription addActor{
-             addActor{
-                 name
-            }
-        }
-    `;
 
     static  UPDATE_ACTOR_NAME_BY_ID = gql`
         mutation changeActorName($actorId: Int, $name:String){
@@ -58,11 +51,25 @@ export default class Queries{
         }
     `;
 
+    static SUBSCRIPTION_ACTOR_ADD_EVENT = gql`
+        subscription addActor{
+             addActor{
+                 name
+            }
+        }
+    `;
     static SUBSCRIPTION_ACTOR_DELETE_EVENT = gql`
         subscription deleteActor{
             deleteActor{
                  name
             }
         }
-    `
+    `;
+
+    static SUBSCRIPTION_ACTOR_UPDATE= gql`
+        subscription updateActor{
+            updateActor{
+                 name
+            }
+        }`;
 }
