@@ -1,6 +1,6 @@
-import ActorPicker, { Sides } from './components/ActorPicker';
-
 import React, {useEffect, useState} from 'react';
+
+import ActorPicker, { Sides } from './components/ActorPicker';
 import Actor from './components/Actor';
 import AddForm from "./components/AddFrom";
 import {ActorType} from "./hooks/actor-fetch";
