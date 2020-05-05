@@ -50,6 +50,14 @@ export default class Queries{
         }
     `;
 
+    static  UPDATE_ACTOR_NAME_BY_ID = gql`
+        mutation changeActorName($actorId: Int, $name:String){
+            changeActorName(actorId: $actorId, name: $name){
+                name
+            }
+        }
+    `;
+
     static SUBSCRIPTION_ACTOR_DELETE_EVENT = gql`
         subscription deleteActor{
             deleteActor{

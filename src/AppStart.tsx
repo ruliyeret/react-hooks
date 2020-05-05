@@ -6,6 +6,7 @@ import {ActorType} from "./hooks/actor-fetch";
 import NewActorPicker from "./components/NewActorPicker";
 import AddForm from "./components/AddFrom";
 import EventLog from "./components/EventLog";
+import UpdateForm from "./components/UpdateForm";
 
 
 
@@ -26,6 +27,7 @@ const AppStart = () =>{
     const [content, setContent] = useState(<div> loading..</div>)
     const [currentActor, setCurrentActor] = useState(getDefaultActor);
     const [showForm,  setShowForm] = useState<boolean>(false);
+    const [updateOperation, setUpdateOperation] = useState<boolean>(false);
     const [ deleteActorMutation, { data:deleteData , error:deleteError}] = useMutation(Queries.DELETE_ACTOR_BY_NAME);
 
     const  changeCurrentActor = (name: string) => {
@@ -53,6 +55,7 @@ const AppStart = () =>{
         }
     }, [data]);
 
+
     const refetchAgain = () =>{
         refetch();
     }
@@ -73,9 +76,9 @@ const AppStart = () =>{
             <button onClick={() => setShowForm(!showForm)}>Add Actor</button>
             <button onClick={ () => deleteActor(currentActor)}>Delete Actor</button>
             {showForm && <AddForm refetchAgain = {refetchAgain}/>}
-
+            <button onClick = { () => setUpdateOperation(!updateOperation)}> Update Actor Name</button>
+            {updateOperation && <UpdateForm refetchAgain = {refetchAgain} id = {currentActor.actorId}/>}
             <EventLog/>
-
         </React.Fragment>
     )
 };
