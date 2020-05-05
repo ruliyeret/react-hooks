@@ -14,14 +14,30 @@ const EventLog = (props) =>{
             });
     const {data:deletesubscribeData, error:deletesubscribeError, loading:deletesubscribeLoading} =
             useSubscription(Queries.SUBSCRIPTION_ACTOR_DELETE_EVENT);
+
+    const {data:updateSubscribe} = useSubscription(Queries.SUBSCRIPTION_ACTOR_UPDATE, {
+        onSubscriptionData: ({subscriptionData}) => {
+            handleUpdateEvent(subscriptionData.data.updateActor);
+        }
+    });
+
     const [ flag, setFlag] = useState(true);
     const[ eventList, setEventList]  = useState(new Array());
 
-    const handleAddingEvent = (newActor) =>{
-        let message:string  = getDate() + "added actor name " + newActor.name + "\n";
+    const handleUpdateEvent = (updateActor) => {
+        let message:string  = getDate() + "update actor name " + updateActor.name + "\n";
+        setEventToList(message);
+    }
+
+    function setEventToList(message: string) {
         let tempEventList = eventList;
         tempEventList.push(message);
         setEventList(tempEventList);
+    }
+
+    const handleAddingEvent = (newActor) =>{
+        let message:string  = getDate() + "added actor name " + newActor.name + "\n";
+        setEventToList(message);
     }
     const getDate = () => {
         return  new Date().toISOString() + ": ";
@@ -31,6 +47,7 @@ const EventLog = (props) =>{
     if(deletesubscribeData){
         // Get the data out and set up the event log section
     }
+
 
     const getEventList = () => {
         return eventList.join();
